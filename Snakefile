@@ -3,7 +3,6 @@ rule all:
 		'boby.count' , 'cindy.count'
 
 
-
 rule alignment:
 	input: 
 		'test_{sample}.fq'
@@ -11,6 +10,7 @@ rule alignment:
 		temp('{sample}.sam')
 	shell: 
 		'bwa mem genome.fa {input} > {output} 2> /dev/null'
+	message: "Alignement ... "
 
 rule sam2bam:
 	input:
@@ -21,6 +21,7 @@ rule sam2bam:
 		'{sample}.sam2bam'
 	shell:
 		'samtools view -bS  {input} > {output} 2> {log}' 
+	message: "Converting sam to bam ... "
 
 rule countbam:
 	input:
@@ -29,4 +30,6 @@ rule countbam:
 		'{sample}.count'
 	shell:
 		"samtools view  {input} | cut -f4 | sort | uniq -c | awk '{{print $2,$1}}' > {output}"
+	message: "Count read per bam "
 
+		
